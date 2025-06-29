@@ -77,8 +77,8 @@ Dependencies:
 - Requires Python 3.7+
 - External libraries: transformers, torch (for language model support)
 
-Author: [Your Name]
-Date: [Creation Date]
+Author: [Michael Rajendran]
+Date: [6/29/2025]
 """
 
 """
@@ -117,8 +117,8 @@ Functions:
 - preprocess_input(text): Cleans and tokenizes user input.
 - get_response(text): Returns a chatbot response based on user input.
 
-Author: [Your Name]
-Date: [Creation Date]
+Author: [Michael Rajendran]
+Date: [05/29/2025]
 """
 
 """
@@ -224,6 +224,6 @@ Example:
     response = agent.generate_response("What is the weather today?")
     print(response)
 
-Author: [Your Name or Organization]
-License: [Appropriate License]
+Author: [Michael Rajendran]
+License: [Apache]
 """
