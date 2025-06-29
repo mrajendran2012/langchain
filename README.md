@@ -1,9 +1,5 @@
-# Write documentation about lg_chatbot.py from the current folder
-# lg_chatbot.py
-
-"""
-lg_chatbot.py
-
+# Chatbot and Agents 
+## Chatbot 1
 This script implements a chatbot interface using the Langchain framework. It provides functionalities for interacting with language models, managing conversation history, and integrating with various tools or APIs as needed. The chatbot is designed to handle user queries, maintain context, and generate appropriate responses based on the input and conversation flow.
 
 Key Features:
@@ -22,10 +18,7 @@ Dependencies:
 - langchain
 - Any additional libraries required for tool integrations
 
-"""
-"""
-lg_chatbot2.py
-
+## Chatbot2
 This module implements an enhanced version of the chatbot logic originally found in `lg_chatbot.py`.
 
 Key Features and Differences from lg_chatbot.py:
@@ -41,11 +34,8 @@ Usage:
 Import the main chatbot class or functions and instantiate/configure as needed for your application.
 
 See inline documentation for details on each class and function.
-"""
 
-"""
-lg_chatbot3.py
-
+## Chatbot3 
 This module implements a chatbot using natural language processing and machine learning techniques.
 It provides functionalities for processing user input, generating responses, and managing conversation context.
 
@@ -79,11 +69,8 @@ Dependencies:
 
 Author: [Michael Rajendran]
 Date: [6/29/2025]
-"""
 
-"""
-lg_chatbot4.py
-
+## Chatbot 4
 This module implements a chatbot using natural language processing techniques and machine learning models.
 It provides functionalities for processing user input, generating responses, and managing conversation context.
 
@@ -119,11 +106,8 @@ Functions:
 
 Author: [Michael Rajendran]
 Date: [05/29/2025]
-"""
 
-"""
-agent_llm.py
-
+## Agent 1
 This module provides the implementation of an intelligent agent powered by a Large Language Model (LLM). 
 It includes classes and functions for initializing, configuring, and interacting with the LLM-based agent. 
 The agent is capable of processing natural language inputs, generating responses, and integrating with 
@@ -155,11 +139,8 @@ Dependencies:
 - OpenAI or other LLM provider SDKs
 - Logging and configuration libraries
 
-"""
 
-"""
-agent_llm2.py
-
+## Agent 2
 This module provides functionalities for interacting with large language models (LLMs) as agents.
 It includes classes and functions to initialize, configure, and manage LLM-based agents, enabling
 them to process prompts, maintain conversational context, and generate responses. The module is
@@ -187,11 +168,7 @@ Example:
     agent = LLM2Agent(config)
     response = agent.send_message("Hello, how can you assist me?")
     print(response)
-"""
-
-"""
-agent_llm3.py
-
+# Agent 3
 This module provides the implementation of an intelligent agent leveraging large language models (LLMs) for natural language understanding and task execution. The agent is designed to interact with users, process their queries, and generate contextually relevant responses using advanced LLM capabilities.
 
 Key Features:
@@ -226,4 +203,3 @@ Example:
 
 Author: [Michael Rajendran]
 License: [Apache]
-"""
