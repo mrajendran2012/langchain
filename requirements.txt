@@ -1,0 +1,12 @@
+langchain
+langchain-community
+lannchain-openai
+langgraph
+lanbchain_tavily
+langsmith
+typing_extensions
+IPython 
+langchain-core
+
+
+
