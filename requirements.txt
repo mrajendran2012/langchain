@@ -7,6 +7,15 @@ langsmith
 typing_extensions
 IPython 
 langchain-core
-
+langchain-text-splitters 
+fastapi
+langchain-embeddings
+langchain-embeddings-openai
+langchain-embeddings-tavily
+langchain-embeddings-ollama
+langchain-embeddings-ollama-openai
+langchain-embeddings-ollama-tavily
+langchain-embeddings-ollama-ollama
+uvicorn
 
 
