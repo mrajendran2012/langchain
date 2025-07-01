@@ -1,8 +1,8 @@
 langchain
 langchain-community
-lannchain-openai
+langchain-openai
 langgraph
-lanbchain_tavily
+langchain-tavily
 langsmith
 typing_extensions
 IPython 
@@ -17,5 +17,7 @@ langchain-embeddings-ollama-openai
 langchain-embeddings-ollama-tavily
 langchain-embeddings-ollama-ollama
 uvicorn
+langchain-community.utilities
+requests
 
 
