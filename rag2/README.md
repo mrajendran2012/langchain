@@ -31,12 +31,13 @@ The `rag2` folder contains an application that implements Retrieval-Augmented Ge
 
 3. **Run the Application**
     ```bash
-    python app.py
+    python chatapp.py
     ```
+    - Alternatively use the run script
 
 ## Folder Structure
 
-- `app.py` - Main application entry point.
+- `chatapp.py` - Main application entry point.
 - `ingest.py` - Scripts for document ingestion.
 - `config/` - Configuration files.
 - `data/` - Source documents and datasets.

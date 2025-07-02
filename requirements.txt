@@ -25,3 +25,9 @@ googletrans==4.0.0-rc1
 gTTS 
 #playsound
 pygame
+#pip install --upgrade httpx
+googletrans
+httpcore
+httpx
+deep-translator
+
