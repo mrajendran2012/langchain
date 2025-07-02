@@ -19,5 +19,9 @@ langchain-embeddings-ollama-ollama
 uvicorn
 langchain-community.utilities
 requests
-
-
+SpeechRecognition 
+pyaudio 
+googletrans==4.0.0-rc1
+gTTS 
+#playsound
+pygame
