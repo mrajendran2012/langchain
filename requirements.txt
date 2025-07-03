@@ -30,4 +30,5 @@ googletrans
 httpcore
 httpx
 deep-translator
+io
 

@@ -73,18 +73,59 @@ class ChatInput(BaseModel):
 
 from models.speech import PygameAudio
 
-
+from fastapi import HTTPException
+from fastapi.responses import JSONResponse
 
 @app.post("/speech")
+async def speech_endpoint():
+    """Endpoint to handle speech input and return AI response text only."""
+    try:
+        speech = PygameAudio()  # Assuming PygameAudio is defined elsewhere
+        source_lang_code = "en-US"
+        target_lang_code = "ta"
+        
+        source_language = "English"
+        target_language = "Tamil"
+
+        # Recognize speech input
+        original_text = speech.recognize_speech(lang_code=source_lang_code)
+
+        # Update state with user message
+        state["messages"].append(HumanMessage(content=original_text))
+        state["language"] = source_language
+
+        # Call the model
+        response_state = await graph.ainvoke(state, config=_call_model.config)
+
+        # Extract AI response
+        ai_message = response_state["messages"][-1]
+
+        if isinstance(ai_message, AIMessage):
+            return {"response": ai_message.content}
+        else:
+            raise HTTPException(status_code=500, detail="Invalid response from model")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing speech: {str(e)}")
+
+async def process_stream_messages(stream):
+    """Process streamed messages from the chatbot."""
+
+    async for chunk, metadata in stream:
+        if isinstance(chunk, AIMessage):  # Filter to just model responses
+            #print(chunk.content, end="|")  # To print each token separately
+            print(chunk.content, end="")
+
+@app.post("/speech2")
 async def speech_endpoint():
     """Endpoint to handle speech input and return AI response."""
     try:
         speech = PygameAudio()  # Assuming PygameAudio is defined elsewhere
         source_lang_code = "en-US"  # Input speech language (e.g., English)
-        target_lang_code = "ta"     # Output language (e.g., Tamil)
+        target_lang_code = "en-US"     # Output language (e.g., Tamil)
         # Assign the language based on lang_code or default to English
         
-        target_language = "Tamil"
+        target_language = "English"
         source_language = "English"
 
         original_text = speech.recognize_speech(lang_code=source_lang_code)
@@ -106,12 +147,19 @@ async def speech_endpoint():
         
         from deep_translator import GoogleTranslator
 
+        audio_bytes = speech.speak_text(text=ai_message.content, lang=target_lang_code)
+
         if isinstance(ai_message, AIMessage):
             # Speak the AI response. Not needed to translate as the LLM will return in the dest language
             #translated_text = speech_input.translate_text(ai_message.content, dest_lang=target_lang_code)
             # translated_text = GoogleTranslator(source='auto', target=speech.target_lang_code).translate(ai_message.content)
             # Speak the AI response in the target language and return audio bytes
+            #audio_bytes = speech.speak_text(text=ai_message.content, lang=target_lang_code)
+            print(ai_message.content)
             audio_bytes = speech.speak_text(text=ai_message.content, lang=target_lang_code)
+            if audio_bytes is None:
+                raise HTTPException(status_code=500, detail="TTS failed to generate audio")
+
             return StreamingResponse(audio_bytes, media_type="audio/wav")
             #if translated_text:
             #    return speech_input.speak_text(translated_text=ai_message.content, lang=target_lang_code)

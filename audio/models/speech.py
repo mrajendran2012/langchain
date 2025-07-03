@@ -57,7 +57,10 @@ import tempfile
 import pygame
 import uuid
 import traceback
-
+from io import BytesIO
+import uuid
+from gtts import gTTS
+import os
 
 class PygameAudio:
     def __init__(self):
@@ -123,10 +126,42 @@ class PygameAudio:
         except Exception as e:
             print(f"❌ TTS or playback error: {e}")
 
-    import uuid
-    import traceback
 
-    def speak_text(self, text, lang='ta'):
+    def speak_text(self, text, lang='ta') -> BytesIO:
+        try:
+            # Create TTS object and save to buffer
+            tts = gTTS(text=text, lang=lang)
+            audio_buffer = BytesIO()
+            tts.write_to_fp(audio_buffer)
+            audio_buffer.seek(0)
+
+            # Save to a temp file for playback
+            tmp_path = os.path.join(tempfile.gettempdir(), f"temp_audio_{uuid.uuid4().hex}.mp3")
+            tts.save(tmp_path)
+
+            # Play audio with pygame
+            print("🔊 Playing translated speech with pygame...")
+            pygame.mixer.init()
+            pygame.mixer.music.load(tmp_path)
+            pygame.mixer.music.play()
+
+            while pygame.mixer.music.get_busy():
+                pygame.time.Clock().tick(10)
+
+            pygame.mixer.quit()
+
+            # Cleanup
+            if os.path.exists(tmp_path):
+                os.remove(tmp_path)
+
+            return audio_buffer
+
+        except Exception as e:
+            print(f"❌ TTS or playback error: {e}")
+            traceback.print_exc()
+            return None
+
+    def speak_text2(self, text, lang='ta'):
         try:
             tts = gTTS(text=text, lang=lang)
         
