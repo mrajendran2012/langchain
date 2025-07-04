@@ -75,47 +75,58 @@ from models.speech import PygameAudio
 
 from fastapi import HTTPException
 from fastapi.responses import JSONResponse
+import ast 
+
+from fastapi import HTTPException
+from langchain_core.messages import AIMessage, HumanMessage
+import ast
+import logging
+import re
+from deep_translator import GoogleTranslator
 
 @app.post("/speech")
-async def speech_endpoint():
-    """Endpoint to handle speech input and return AI response text only."""
+async def speech_endpoint(target_lang_code: str = "en-US"):
+    """Endpoint to handle speech input and return AI-generated audio response."""
     try:
-        speech = PygameAudio()  # Assuming PygameAudio is defined elsewhere
+        speech = PygameAudio()
         source_lang_code = "en-US"
-        target_lang_code = "ta"
-        
         source_language = "English"
-        target_language = "Tamil"
 
         # Recognize speech input
         original_text = speech.recognize_speech(lang_code=source_lang_code)
+        if not original_text:
+            logging.error("Speech recognition failed: No text recognized")
+            raise HTTPException(status_code=500, detail="Speech recognition failed")
 
-        # Update state with user message
+        logging.info(original_text)
+        # Update state with user input
         state["messages"].append(HumanMessage(content=original_text))
         state["language"] = source_language
 
-        # Call the model
+        # Invoke the graph to get AI response
         response_state = await graph.ainvoke(state, config=_call_model.config)
-
-        # Extract AI response
+        
+        # Extract the last message (should be AIMessage)
         ai_message = response_state["messages"][-1]
+        
+        if not isinstance(ai_message, AIMessage):
+            logging.error(f"Expected AIMessage, got {type(ai_message)}")
+            raise HTTPException(status_code=500, detail="Expected AIMessage as last message")
 
-        if isinstance(ai_message, AIMessage):
-            return {"response": ai_message.content}
-        else:
-            raise HTTPException(status_code=500, detail="Invalid response from model")
+        logging.info(f"AI response: {ai_message.content}")
+
+        # Generate audio from AI response content
+        audio_bytes = speech.speak_text(text=ai_message.content, lang=target_lang_code)
+        if audio_bytes is None:
+            logging.error("TTS failed to generate audio")
+            raise HTTPException(status_code=500, detail="TTS failed to generate audio")
+
+        return StreamingResponse(audio_bytes, media_type="audio/wav")
 
     except Exception as e:
+        logging.error(f"Error in /speech endpoint: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error processing speech: {str(e)}")
-
-async def process_stream_messages(stream):
-    """Process streamed messages from the chatbot."""
-
-    async for chunk, metadata in stream:
-        if isinstance(chunk, AIMessage):  # Filter to just model responses
-            #print(chunk.content, end="|")  # To print each token separately
-            print(chunk.content, end="")
-
+            
 @app.post("/speech2")
 async def speech_endpoint():
     """Endpoint to handle speech input and return AI response."""
